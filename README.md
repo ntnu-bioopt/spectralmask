@@ -10,4 +10,4 @@ first column and reflectance or transmittance values along the second column.
 
 If you find this software useful, we would be grateful if you could cite the following paper: 
 
-A. Bjorgan and L. L. Randeberg, "Towards real-time medical diagnostics using hyperspectral imaging technology", Proc. SPIE 9537 (doi.org/doi:10.1117/12.2184155). 
+A. Bjorgan and L. L. Randeberg, "Towards real-time medical diagnostics using hyperspectral imaging technology", Proc. SPIE 9537 (http://doi.org/doi:10.1117/12.2184155). 
