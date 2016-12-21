@@ -8,7 +8,6 @@
 #ifndef MASKING_H_DEFINED
 #define MASKING_H_DEFINED
 
-
 /**
  * Masking parameters. Reference spectra and so on.  
  **/
@@ -36,8 +35,14 @@ typedef struct{
  **/
 enum masking_err_t{
 	MASKING_NO_ERR = 0, 
-	MASKING_LIBRARY_ERR = -1
+	MASKING_REFLECTANCE_LIBRARY_ERR = -1,
+	MASKING_TRANSMITTANCE_LIBRARY_ERR = -2
 };
+
+/**
+ * Masking error messages.
+ **/
+const char *masking_error_message(masking_err_t errcode);
 
 /**
  * Internal datatype for controlling segmentations. Samples along the first table direction, ref. spectrum number along the next.
@@ -93,9 +98,7 @@ void masking_thresh(masking_t *mask_param, int num_samples, float *line_data, ma
  **/
 void masking_free(masking_t *mask_param);
 
-#warning "NB! Fixed masking spectra directories have been defined. Please check (line approx. 94, src/masking.h)."
-#define REFLECTANCE_MASKING_SPECTRA_DIRECTORY "/home/hyspex/IACOBUS/processing_libraries/masking/reflectance_spectra/"
-#define TRANSMITTANCE_MASKING_SPECTRA_DIRECTORY "/home/hyspex/IACOBUS/processing_libraries/masking/transmittance_spectra/"
-
+#define REFLECTANCE_MASKING_SPECTRA_DIRECTORY "@REFLECTANCE_MASKING_SPECTRA_DIRECTORY@"
+#define TRANSMITTANCE_MASKING_SPECTRA_DIRECTORY "@TRANSMITTANCE_MASKING_SPECTRA_DIRECTORY@"
 
 #endif

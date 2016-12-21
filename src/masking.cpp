@@ -22,15 +22,18 @@ masking_err_t masking_init(int num_wlens, float *wlens, masking_input_data_type_
 	switch (masking_type){
 		case REFLECTANCE_MASKING:
 			retval = spectral_construct_library_from_directory(REFLECTANCE_MASKING_SPECTRA_DIRECTORY, &library);
+			if (retval != SPECTRAL_NO_ERR) {
+				return MASKING_REFLECTANCE_LIBRARY_ERR;
+			}
 		break;
 
 		case TRANSMITTANCE_MASKING:
 			retval = spectral_construct_library_from_directory(TRANSMITTANCE_MASKING_SPECTRA_DIRECTORY, &library);
+			if (retval != SPECTRAL_NO_ERR) {
+				return MASKING_TRANSMITTANCE_LIBRARY_ERR;
+			}
 			sam_thresh = SAM_THRESH_TRANSMITTANCE;
 		break;
-	}
-	if (retval != SPECTRAL_NO_ERR){
-		return MASKING_LIBRARY_ERR;
 	}
 
 	//generate masking spectra from the spectral library
@@ -54,6 +57,7 @@ masking_err_t masking_init(int num_wlens, float *wlens, masking_input_data_type_
 	}
 
 	spectral_free_library(&library);
+	return MASKING_NO_ERR;
 }
 
 void masking_free(masking_t *mask_param){
@@ -155,3 +159,14 @@ bool masking_pixel_belongs(const masking_t *mask_param, mask_thresh_t threshed, 
 	return belongs;
 }
 
+const char *masking_error_message(masking_err_t errcode)
+{
+	switch (errcode) {
+		case MASKING_NO_ERR:
+			return "No error.";
+		case MASKING_REFLECTANCE_LIBRARY_ERR:
+			return "Error in constructing spectral library from masking spectra in " REFLECTANCE_MASKING_SPECTRA_DIRECTORY;
+		case MASKING_TRANSMITTANCE_LIBRARY_ERR:
+			return "Error in constructing spectral library from masking spectra in " TRANSMITTANCE_MASKING_SPECTRA_DIRECTORY;
+	}
+}

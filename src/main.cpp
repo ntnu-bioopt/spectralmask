@@ -13,6 +13,11 @@
 using namespace std;
 
 int main(int argc, char *argv[]){
+	if (argc < 2) {
+		fprintf(stderr, "Usage: %s hyperspectral_filename.\n", argv[0]);
+		exit(1);
+	}
+
 	char* filename = argv[1];
 
 	//read hyperspectral image header
@@ -26,7 +31,12 @@ int main(int argc, char *argv[]){
 	}
 
 	masking_t mask_param;
-	masking_init(end_band - start_band, wlens, REFLECTANCE_MASKING, &mask_param);
+	masking_err_t errcode = masking_init(end_band - start_band, wlens, REFLECTANCE_MASKING, &mask_param);
+	if (errcode != MASKING_NO_ERR) {
+		fprintf(stderr, "Error in initializing masking parameters: %s\n", masking_error_message(errcode));
+		exit(1);
+	}
+
 	mask_thresh_t thresh_val = masking_allocate_thresh(&mask_param, header.samples);
 
 	//read image and mask
